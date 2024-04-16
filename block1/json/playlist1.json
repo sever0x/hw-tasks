@@ -1,0 +1,58 @@
+[
+  {
+    "title": "Imagine",
+    "artist": {
+      "name": "John Lennon",
+      "country": "Britain"
+    },
+    "album": "Imagine",
+    "genres": [
+      "Rock",
+      "Pop"
+    ],
+    "duration": 240,
+    "releaseYear": 1971
+  },
+  {
+    "title": "Billie Jean",
+    "artist": {
+      "name": "Michael Jackson",
+      "country": "US"
+    },
+    "album": "Thriller",
+    "genres": [
+      "Pop",
+      "R&B"
+    ],
+    "duration": 294,
+    "releaseYear": 1982
+  },
+  {
+    "title": "Bohemian Rhapsody",
+    "artist": {
+      "name": "Queen",
+      "country": "Britain"
+    },
+    "album": "A Night at the Opera",
+    "genres": [
+      "Rock",
+      "Operatic Rock"
+    ],
+    "duration": 354,
+    "releaseYear": 1975
+  },
+  {
+    "title": "We Will Rock You",
+    "artist": {
+      "name": "Queen",
+      "country": "Britain"
+    },
+    "album": "News of the World",
+    "genres": [
+      "Rock",
+      "Operatic Rock"
+    ],
+    "duration": 135,
+    "releaseYear": 1977
+  }
+]

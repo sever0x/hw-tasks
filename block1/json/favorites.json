@@ -1,0 +1,44 @@
+[
+  {
+    "title": "Stairway to Heaven",
+    "artist": {
+      "name": "Led Zeppelin",
+      "country": "Britain"
+    },
+    "album": "Led Zeppelin IV",
+    "genres": [
+      "Rock",
+      "Hard Rock"
+    ],
+    "duration": 482,
+    "releaseYear": 1971
+  },
+  {
+    "title": "Hotel California",
+    "artist": {
+      "name": "Eagles",
+      "country": "US"
+    },
+    "album": "Hotel California",
+    "genres": [
+      "Rock",
+      "Soft Rock"
+    ],
+    "duration": 391,
+    "releaseYear": 1977
+  },
+  {
+    "title": "Smells Like Teen Spirit",
+    "artist": {
+      "name": "Nirvana",
+      "country": "US"
+    },
+    "album": "Nevermind",
+    "genres": [
+      "Grunge",
+      "Alternative Rock"
+    ],
+    "duration": 302,
+    "releaseYear": 1991
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "title": "Like a Rolling Stone",
+    "artist": {
+      "name": "Bob Dylan",
+      "country": "US"
+    },
+    "album": "Highway 61 Revisited",
+    "genres": [
+      "Rock",
+      "Folk Rock"
+    ],
+    "duration": 378,
+    "releaseYear": 1965
+  },
+  {
+    "title": "Purple Haze",
+    "artist": {
+      "name": "Jimi Hendrix",
+      "country": "US"
+    },
+    "album": "Are You Experienced",
+    "genres": [
+      "Rock",
+      "Psychedelic Rock"
+    ],
+    "duration": 167,
+    "releaseYear": 1967
+  },
+  {
+    "title": "Comfortably Numb",
+    "artist": {
+      "name": "Pink Floyd",
+      "country": "Britain"
+    },
+    "album": "The Wall",
+    "genres": [
+      "Progressive Rock",
+      "Art Rock"
+    ],
+    "duration": 383,
+    "releaseYear": 1979
+  }
+]
