@@ -7,40 +7,32 @@ import java.util.List;
 import java.util.Map;
 
 public class StatisticsCalculator {
-
-    public static Map<String, Integer> calculateStatistics(List<Song> songs, String attribute) {
+    public Map<String, Integer> calculateStatistics(List<Song> songs, String attribute) {
         Map<String, Integer> statistics = new HashMap<>();
 
         for (Song song : songs) {
-            switch (attribute) {
-                case "title" -> {
-                    String title = song.getTitle();
-                    statistics.put(title, statistics.getOrDefault(title, 0) + 1);
-                }
-                case "artist" -> {
-                    String artistName = song.getArtist().getName();
-                    statistics.put(artistName, statistics.getOrDefault(artistName, 0) + 1);
-                }
-                case "album" -> {
-                    String album = song.getAlbum();
-                    statistics.put(album, statistics.getOrDefault(album, 0) + 1);
-                }
-                case "releaseYear" -> {
-                    String releaseYear = String.valueOf(song.getReleaseYear());
-                    statistics.put(releaseYear, statistics.getOrDefault(releaseYear, 0) + 1);
-                }
-                case "genres" -> {
-                    for (String genre : song.getGenres()) {
-                        statistics.put(genre, statistics.getOrDefault(genre, 0) + 1);
-                    }
-                }
-                case "duration" -> {
-                    String duration = String.valueOf(song.getDuration());
-                    statistics.put(duration, statistics.getOrDefault(duration, 0) + 1);
-                }
-            }
+            updateStatistics(statistics, song, attribute);
         }
 
         return statistics;
+    }
+
+    private void updateStatistics(Map<String, Integer> statistics, Song song, String attribute) {
+        switch (attribute) {
+            case "title" -> incrementValue(statistics, song.getTitle());
+            case "artist" -> incrementValue(statistics, song.getArtist().getName());
+            case "album" -> incrementValue(statistics, song.getAlbum());
+            case "releaseYear" -> incrementValue(statistics, String.valueOf(song.getReleaseYear()));
+            case "genres" -> {
+                for (String genre : song.getGenres()) {
+                    incrementValue(statistics, genre);
+                }
+            }
+            case "duration" -> incrementValue(statistics, String.valueOf(song.getDuration()));
+        }
+    }
+
+    private void incrementValue(Map<String, Integer> statistics, String key) {
+        statistics.put(key, statistics.getOrDefault(key, 0) + 1);
     }
 }

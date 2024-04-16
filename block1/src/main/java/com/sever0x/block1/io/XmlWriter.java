@@ -22,6 +22,7 @@ public class XmlWriter {
                             e.printStackTrace();
                         }
                     });
+            writer.write("</statistics>");
         } catch (IOException e) {
             e.printStackTrace();
         }

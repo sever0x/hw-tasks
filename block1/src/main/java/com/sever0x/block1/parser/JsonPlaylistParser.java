@@ -16,14 +16,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class JsonPlaylistParser {
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    private static final ObjectMapper mapper = new ObjectMapper();
-
-    public static List<Song> parsePlaylistFromDirectory(String path) {
+    public List<Song> parsePlaylistFromDirectory(String path) {
         List<Song> songs = new ArrayList<>();
         File directory = new File(path);
         File[] files = directory.listFiles();
-
         ExecutorService executorService = Executors.newFixedThreadPool(4);
         List<Future<List<Song>>> futures = new ArrayList<>();
 
@@ -42,7 +40,7 @@ public class JsonPlaylistParser {
         return songs;
     }
 
-    private static List<Song> parseSongsFromFile(File file) {
+    private List<Song> parseSongsFromFile(File file) {
         List<Song> songs = new ArrayList<>();
         try (InputStream inputStream = new FileInputStream(file)) {
             JsonNode rootNode = mapper.readTree(inputStream);
