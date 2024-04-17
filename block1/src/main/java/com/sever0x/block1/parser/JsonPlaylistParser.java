@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sever0x.block1.model.Song;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -17,12 +14,17 @@ import java.util.concurrent.Future;
 
 public class JsonPlaylistParser {
     private final ObjectMapper mapper = new ObjectMapper();
+    private final int threadCount;
+
+    public JsonPlaylistParser(int threadCount) {
+        this.threadCount = threadCount;
+    }
 
     public List<Song> parsePlaylistFromDirectory(String path) {
         List<Song> songs = new ArrayList<>();
         File directory = new File(path);
         File[] files = directory.listFiles();
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         List<Future<List<Song>>> futures = new ArrayList<>();
 
         for (File file : files) {
@@ -37,13 +39,16 @@ public class JsonPlaylistParser {
             }
         }
 
+        executorService.shutdown();
         return songs;
     }
 
     private List<Song> parseSongsFromFile(File file) {
         List<Song> songs = new ArrayList<>();
-        try (InputStream inputStream = new FileInputStream(file)) {
-            JsonNode rootNode = mapper.readTree(inputStream);
+
+        try (InputStream inputStream = new FileInputStream(file);
+             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
+            JsonNode rootNode = mapper.readTree(bufferedInputStream);
             if (rootNode.isArray()) {
                 for (JsonNode node : rootNode) {
                     Song song = mapper.treeToValue(node, Song.class);
@@ -53,6 +58,7 @@ public class JsonPlaylistParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return songs;
     }
 }

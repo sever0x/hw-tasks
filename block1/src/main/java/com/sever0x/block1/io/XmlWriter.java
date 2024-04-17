@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class XmlWriter {
 
-    public static void writeToXml(Map<String, Integer> statistics, String attribute) {
+    public void writeToXml(Map<String, Integer> statistics, String attribute) {
         try (FileWriter writer = new FileWriter("statistics_by_" + attribute + ".xml")) {
             writer.write("<statistics>\n");
 

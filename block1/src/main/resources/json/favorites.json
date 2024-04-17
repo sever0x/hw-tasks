@@ -1,0 +1,142 @@
+[
+  {
+    "title": "Stairway to Heaven",
+    "artist": {
+      "name": "Led Zeppelin",
+      "country": "Britain"
+    },
+    "album": "Led Zeppelin IV",
+    "genres": [
+      "Rock",
+      "Hard Rock"
+    ],
+    "duration": 482,
+    "releaseYear": 1971
+  },
+  {
+    "title": "Hotel California",
+    "artist": {
+      "name": "Eagles",
+      "country": "US"
+    },
+    "album": "Hotel California",
+    "genres": [
+      "Rock",
+      "Soft Rock"
+    ],
+    "duration": 391,
+    "releaseYear": 1977
+  },
+  {
+    "title": "Smells Like Teen Spirit",
+    "artist": {
+      "name": "Nirvana",
+      "country": "US"
+    },
+    "album": "Nevermind",
+    "genres": [
+      "Grunge",
+      "Alternative Rock"
+    ],
+    "duration": 302,
+    "releaseYear": 1991
+  },
+  {
+    "title": "Imagine",
+    "artist": {
+      "name": "John Lennon",
+      "country": "Britain"
+    },
+    "album": "Imagine",
+    "genres": [
+      "Rock",
+      "Pop"
+    ],
+    "duration": 240,
+    "releaseYear": 1971
+  },
+  {
+    "title": "Billie Jean",
+    "artist": {
+      "name": "Michael Jackson",
+      "country": "US"
+    },
+    "album": "Thriller",
+    "genres": [
+      "Pop",
+      "R&B"
+    ],
+    "duration": 294,
+    "releaseYear": 1982
+  },
+  {
+    "title": "Bohemian Rhapsody",
+    "artist": {
+      "name": "Queen",
+      "country": "Britain"
+    },
+    "album": "A Night at the Opera",
+    "genres": [
+      "Rock",
+      "Operatic Rock"
+    ],
+    "duration": 354,
+    "releaseYear": 1975
+  },
+  {
+    "title": "We Will Rock You",
+    "artist": {
+      "name": "Queen",
+      "country": "Britain"
+    },
+    "album": "News of the World",
+    "genres": [
+      "Rock",
+      "Operatic Rock"
+    ],
+    "duration": 135,
+    "releaseYear": 1977
+  },
+  {
+    "title": "Like a Rolling Stone",
+    "artist": {
+      "name": "Bob Dylan",
+      "country": "US"
+    },
+    "album": "Highway 61 Revisited",
+    "genres": [
+      "Rock",
+      "Folk Rock"
+    ],
+    "duration": 378,
+    "releaseYear": 1965
+  },
+  {
+    "title": "Purple Haze",
+    "artist": {
+      "name": "Jimi Hendrix",
+      "country": "US"
+    },
+    "album": "Are You Experienced",
+    "genres": [
+      "Rock",
+      "Psychedelic Rock"
+    ],
+    "duration": 167,
+    "releaseYear": 1967
+  },
+  {
+    "title": "Comfortably Numb",
+    "artist": {
+      "name": "Pink Floyd",
+      "country": "Britain"
+    },
+    "album": "The Wall",
+    "genres": [
+      "Progressive Rock",
+      "Art Rock"
+    ],
+    "duration": 383,
+    "releaseYear": 1979
+  }
+]
