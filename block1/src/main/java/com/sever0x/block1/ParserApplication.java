@@ -11,7 +11,7 @@ import java.util.Map;
 public class ParserApplication {
     public static void main(String[] args) {
         if (args.length != 2) {
-            System.out.println("Usage: java -jar music-stats.jar <directory_path> <attribute_name>");
+            System.out.println("Usage: java -jar target/block1-1.0-SNAPSHOT.jar <directory_path> <attribute_name>");
             return;
         }
 
