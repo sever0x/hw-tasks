@@ -1,5 +1,6 @@
 package com.sever0x.block1.parser;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sever0x.block1.model.Song;
@@ -21,6 +22,8 @@ public class JsonPlaylistParser {
     }
 
     public List<Song> parsePlaylistFromDirectory(String path) {
+        validateDirectoryPath(path);
+
         List<Song> songs = new ArrayList<>();
         File directory = new File(path);
         File[] files = directory.listFiles();
@@ -35,7 +38,7 @@ public class JsonPlaylistParser {
             try {
                 songs.addAll(future.get());
             } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("Invalid JSON file skipped: " + e.getMessage());
             }
         }
 
@@ -43,9 +46,8 @@ public class JsonPlaylistParser {
         return songs;
     }
 
-    private List<Song> parseSongsFromFile(File file) {
+    public List<Song> parseSongsFromFile(File file) throws ExecutionException {
         List<Song> songs = new ArrayList<>();
-
         try (InputStream inputStream = new FileInputStream(file);
              BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
             JsonNode rootNode = mapper.readTree(bufferedInputStream);
@@ -56,9 +58,19 @@ public class JsonPlaylistParser {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ExecutionException("Invalid JSON file: " + file.getName(), e);
+        }
+        return songs;
+    }
+
+    private void validateDirectoryPath(String path) {
+        if (path == null || path.isEmpty()) {
+            throw new IllegalArgumentException("Directory path cannot be null or empty.");
         }
 
-        return songs;
+        File directory = new File(path);
+        if (!directory.exists()) {
+            throw new IllegalArgumentException("Directory " + path + " does not exist.");
+        }
     }
 }
