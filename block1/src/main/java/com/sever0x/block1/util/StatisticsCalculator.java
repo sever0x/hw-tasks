@@ -29,6 +29,7 @@ public class StatisticsCalculator {
                 }
             }
             case "duration" -> incrementValue(statistics, String.valueOf(song.getDuration()));
+            default -> throw new IllegalArgumentException("Invalid attribute: " + attribute);
         }
     }
 

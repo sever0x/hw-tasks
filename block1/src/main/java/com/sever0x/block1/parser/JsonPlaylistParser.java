@@ -1,6 +1,5 @@
 package com.sever0x.block1.parser;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sever0x.block1.model.Song;

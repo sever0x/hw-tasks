@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -16,7 +15,7 @@ class JsonPlaylistParserTest {
     private final String testDirectoryPath = "src/main/resources/json";
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         parser = new JsonPlaylistParser(2);
     }
 
