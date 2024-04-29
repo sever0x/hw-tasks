@@ -39,15 +39,15 @@ mvn clean install
 To run the application, use the following command:
 
 ```
-java -jar target/block1-1.0-SNAPSHOT.jar <directory_path> <attribute_name>
+java -jar target/block1-1.0-SNAPSHOT.jar <directory_path> <attribute_name> <thread_count>
 ```
 
-Replace `<directory_path>` with the path to the directory containing the JSON files, and `<attribute_name>` with the attribute to generate statistics for (e.g., "title", "artist", "album", "releaseYear", "genres", "duration").
+Replace `<directory_path>` with the path to the directory containing the JSON files, `<attribute_name>` with the attribute to generate statistics for (e.g., "title", "artist", "album", "releaseYear", "genres", "duration") and `<thread_count>` with the count of threads (1, 2, 4, 8).
 
 For example:
 
 ```
-java -jar target/block1-1.0-SNAPSHOT.jar C:\Users\user\path\tasks\block1\src\main\resources\json genres
+java -jar target/block1-1.0-SNAPSHOT.jar C:\Users\user\path\tasks\block1\src\main\resources\json genres 1
 ```
 
 This will generate an XML file named `statistics_by_genres.xml` containing the statistics for the "genres" attribute.
@@ -67,10 +67,7 @@ The application expects a directory containing JSON files with the following str
       "country": "US"
     },
     "album": "Highway 61 Revisited",
-    "genres": [
-      "Rock",
-      "Folk Rock"
-    ],
+    "genres": "Rock, Folk Rock",
     "duration": 378,
     "releaseYear": 1965
   },
@@ -81,10 +78,7 @@ The application expects a directory containing JSON files with the following str
       "country": "US"
     },
     "album": "Are You Experienced",
-    "genres": [
-      "Rock",
-      "Psychedelic Rock"
-    ],
+    "genres": "Rock, Psychedelic Rock",
     "duration": 167,
     "releaseYear": 1967
   },
@@ -95,10 +89,7 @@ The application expects a directory containing JSON files with the following str
       "country": "Britain"
     },
     "album": "The Wall",
-    "genres": [
-      "Progressive Rock",
-      "Art Rock"
-    ],
+    "genres": "Progressive Rock, Art Rock",
     "duration": 383,
     "releaseYear": 1979
   }
@@ -140,9 +131,9 @@ For example, the contents of `statistics_by_genres.xml` might look like this:
 
 The application supports multi-threaded parsing to improve performance. The results of the performance experiments with different numbers of threads are as follows:
 
-- Execution time with 1 thread: 144ms
-- Execution time with 2 threads: 7ms
-- Execution time with 4 threads: 11ms
-- Execution time with 8 threads: 7ms
+- Execution time with 1 thread: 82ms
+- Execution time with 2 threads: 80ms
+- Execution time with 4 threads: 88ms
+- Execution time with 8 threads: 80ms
 
-As you can see, using multiple threads significantly reduces the execution time, especially when using 2 or 8 threads.
+One or two threads are faster than 4 or 8 threads, because in this case, the overhead of creating and coordinating a large number of threads exceeds the benefits of parallelism.
