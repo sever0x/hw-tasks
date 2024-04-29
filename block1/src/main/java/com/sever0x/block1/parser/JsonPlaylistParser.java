@@ -1,16 +1,18 @@
 package com.sever0x.block1.parser;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sever0x.block1.model.Song;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class JsonPlaylistParser {
     private final ObjectMapper mapper = new ObjectMapper();
@@ -23,7 +25,7 @@ public class JsonPlaylistParser {
     public List<Song> parsePlaylistFromDirectory(String path) {
         validateDirectoryPath(path);
 
-        List<Song> songs = new ArrayList<>();
+        List<Song> songs = new CopyOnWriteArrayList<>();
         File directory = new File(path);
         File[] files = directory.listFiles();
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
@@ -47,14 +49,17 @@ public class JsonPlaylistParser {
 
     public List<Song> parseSongsFromFile(File file) throws ExecutionException {
         List<Song> songs = new ArrayList<>();
+        JsonFactory jsonFactory = new JsonFactory();
         try (InputStream inputStream = new FileInputStream(file);
-             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
-            JsonNode rootNode = mapper.readTree(bufferedInputStream);
-            if (rootNode.isArray()) {
-                for (JsonNode node : rootNode) {
-                    Song song = mapper.treeToValue(node, Song.class);
-                    songs.add(song);
-                }
+             JsonParser jsonParser = jsonFactory.createParser(inputStream);
+        ) {
+            if (jsonParser.nextToken() != JsonToken.START_ARRAY) {
+                throw new IllegalStateException("Root node is not an array");
+            }
+
+            while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
+                Song song = mapper.readValue(jsonParser, Song.class);
+                songs.add(song);
             }
         } catch (IOException e) {
             throw new ExecutionException("Invalid JSON file: " + file.getName(), e);

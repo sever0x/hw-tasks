@@ -17,9 +17,9 @@ class StatisticsCalculatorTest {
     void setup() {
         calculator = new StatisticsCalculator();
         songs = List.of(
-                new Song("Title1", new Artist("Artist1", "Country1"), "Album1", List.of("Genre1"), 300, 2000),
-                new Song("Title2", new Artist("Artist2", "Country2"), "Album2", List.of("Genre2"), 200, 2001),
-                new Song("Title1", new Artist("Artist1", "Country1"), "Album1", List.of("Genre1"), 300, 2000)
+                new Song("Title1", new Artist("Artist1", "Country1"), "Album1", "Genre1", 300, 2000),
+                new Song("Title2", new Artist("Artist2", "Country2"), "Album2", "Genre2", 200, 2001),
+                new Song("Title1", new Artist("Artist1", "Country1"), "Album1", "Genre1", 300, 2000)
         );
     }
 

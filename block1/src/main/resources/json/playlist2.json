@@ -6,10 +6,7 @@
       "country": "US"
     },
     "album": "Highway 61 Revisited",
-    "genres": [
-      "Rock",
-      "Folk Rock"
-    ],
+    "genres": "Rock, Folk Rock",
     "duration": 378,
     "releaseYear": 1965
   },
@@ -20,10 +17,7 @@
       "country": "US"
     },
     "album": "Are You Experienced",
-    "genres": [
-      "Rock",
-      "Psychedelic Rock"
-    ],
+    "genres": "Rock, Psychedelic Rock",
     "duration": 167,
     "releaseYear": 1967
   },
@@ -34,10 +28,7 @@
       "country": "Britain"
     },
     "album": "The Wall",
-    "genres": [
-      "Progressive Rock",
-      "Art Rock"
-    ],
+    "genres": "Progressive Rock, Art Rock",
     "duration": 383,
     "releaseYear": 1979
   }

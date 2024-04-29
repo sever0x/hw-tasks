@@ -1,5 +1,6 @@
 package com.sever0x.block1.util;
 
+import com.sever0x.block1.constants.AttributeConstants;
 import com.sever0x.block1.model.Song;
 
 import java.util.HashMap;
@@ -19,16 +20,17 @@ public class StatisticsCalculator {
 
     private void updateStatistics(Map<String, Integer> statistics, Song song, String attribute) {
         switch (attribute) {
-            case "title" -> incrementValue(statistics, song.getTitle());
-            case "artist" -> incrementValue(statistics, song.getArtist().getName());
-            case "album" -> incrementValue(statistics, song.getAlbum());
-            case "releaseYear" -> incrementValue(statistics, String.valueOf(song.getReleaseYear()));
-            case "genres" -> {
-                for (String genre : song.getGenres()) {
-                    incrementValue(statistics, genre);
+            case AttributeConstants.TITLE -> incrementValue(statistics, song.getTitle());
+            case AttributeConstants.ARTIST -> incrementValue(statistics, song.getArtist().getName());
+            case AttributeConstants.ALBUM -> incrementValue(statistics, song.getAlbum());
+            case AttributeConstants.RELEASE_YEAR -> incrementValue(statistics, String.valueOf(song.getReleaseYear()));
+            case AttributeConstants.GENRES -> {
+                String[] genreArray = song.getGenres().split(",");
+                for (String genre : genreArray) {
+                    incrementValue(statistics, genre.trim());
                 }
             }
-            case "duration" -> incrementValue(statistics, String.valueOf(song.getDuration()));
+            case AttributeConstants.DURATION -> incrementValue(statistics, String.valueOf(song.getDuration()));
             default -> throw new IllegalArgumentException("Invalid attribute: " + attribute);
         }
     }

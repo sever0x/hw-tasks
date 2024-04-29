@@ -17,7 +17,7 @@ public class Song {
 
     private String album;
 
-    private List<String> genres;
+    private String genres;
 
     private int duration;
 

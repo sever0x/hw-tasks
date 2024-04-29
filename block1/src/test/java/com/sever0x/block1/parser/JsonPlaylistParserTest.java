@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JsonPlaylistParserTest {
     private JsonPlaylistParser parser;
-    private final String testDirectoryPath = "src/main/resources/json";
+    private final String testDirectoryPath = "src/test/resources/json";
 
     @BeforeEach
     void setup() {

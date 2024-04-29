@@ -6,10 +6,7 @@
       "country": "Britain"
     },
     "album": "Imagine",
-    "genres": [
-      "Rock",
-      "Pop"
-    ],
+    "genres": "Rock, Pop",
     "duration": 240,
     "releaseYear": 1971
   },
@@ -20,10 +17,7 @@
       "country": "US"
     },
     "album": "Thriller",
-    "genres": [
-      "Pop",
-      "R&B"
-    ],
+    "genres": "Pop, R&B",
     "duration": 294,
     "releaseYear": 1982
   },
@@ -34,10 +28,7 @@
       "country": "Britain"
     },
     "album": "A Night at the Opera",
-    "genres": [
-      "Rock",
-      "Operatic Rock"
-    ],
+    "genres": "Rock, Operatic Rock",
     "duration": 354,
     "releaseYear": 1975
   },
@@ -48,10 +39,7 @@
       "country": "Britain"
     },
     "album": "News of the World",
-    "genres": [
-      "Rock",
-      "Operatic Rock"
-    ],
+    "genres": "Rock, Operatic Rock",
     "duration": 135,
     "releaseYear": 1977
   }
