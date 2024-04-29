@@ -7,7 +7,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A class for calculating statistics on songs.
+ */
 public class StatisticsCalculator {
+
+    /**
+     * Calculates statistics on songs for a given attribute.
+     *
+     * @param songs     The list of songs for which to calculate statistics.
+     * @param attribute The attribute for which to calculate statistics.
+     * @return A map containing statistics in the format "value" -> "count".
+     */
     public Map<String, Integer> calculateStatistics(List<Song> songs, String attribute) {
         Map<String, Integer> statistics = new HashMap<>();
 

@@ -14,14 +14,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
+/**
+ * A class for parsing JSON files containing songs.
+ */
 public class JsonPlaylistParser {
     private final ObjectMapper mapper = new ObjectMapper();
     private final int threadCount;
 
+    /**
+     * Constructor for the JsonPlaylistParser class.
+     *
+     * @param threadCount The number of threads for parallel parsing.
+     */
     public JsonPlaylistParser(int threadCount) {
         this.threadCount = threadCount;
     }
 
+    /**
+     * Parses JSON files containing songs from the specified directory.
+     *
+     * @param path The path to the directory containing JSON files.
+     * @return A list of Song objects parsed from the JSON files.
+     */
     public List<Song> parsePlaylistFromDirectory(String path) {
         validateDirectoryPath(path);
 
@@ -47,6 +61,13 @@ public class JsonPlaylistParser {
         return songs;
     }
 
+    /**
+     * Parses a JSON file containing songs.
+     *
+     * @param file The JSON file to be parsed.
+     * @return A list of Song objects parsed from the JSON file.
+     * @throws ExecutionException If the JSON file is invalid.
+     */
     public List<Song> parseSongsFromFile(File file) throws ExecutionException {
         List<Song> songs = new ArrayList<>();
         JsonFactory jsonFactory = new JsonFactory();
