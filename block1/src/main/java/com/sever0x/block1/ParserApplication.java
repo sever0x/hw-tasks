@@ -1,11 +1,8 @@
 package com.sever0x.block1;
 
 import com.sever0x.block1.io.XmlWriter;
-import com.sever0x.block1.model.Song;
 import com.sever0x.block1.parser.JsonPlaylistParser;
-import com.sever0x.block1.util.StatisticsCalculator;
 
-import java.util.List;
 import java.util.Map;
 
 public class ParserApplication {
@@ -23,13 +20,11 @@ public class ParserApplication {
         long start, end;
 
         start = System.currentTimeMillis();
-        List<Song> songs = parser.parsePlaylistFromDirectory(directoryPath);
+        Map<String, Integer> statistics = parser.parsePlaylistFromDirectory(directoryPath, attributeName);
         end = System.currentTimeMillis();
 
         System.out.println("Execution time with " + threadCount + " thread(s): " + (end - start) + "ms");
 
-        StatisticsCalculator calculator = new StatisticsCalculator();
-        Map<String, Integer> statistics = calculator.calculateStatistics(songs, attributeName);
         XmlWriter writer = new XmlWriter();
         writer.writeToXml(statistics, attributeName);
         System.out.println("Statistics written to statistics_by_" + attributeName + ".xml");
