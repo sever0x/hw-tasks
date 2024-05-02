@@ -1,4 +1,4 @@
-package com.sever0x.block2.exception;
+package com.sever0x.block2.exception.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

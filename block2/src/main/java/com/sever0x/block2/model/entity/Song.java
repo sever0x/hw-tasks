@@ -7,6 +7,7 @@ import lombok.*;
 @Table(name = "songs")
 @Getter
 @Setter
+@Builder
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor

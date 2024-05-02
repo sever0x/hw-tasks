@@ -1,12 +1,15 @@
 package com.sever0x.block2.controller;
 
+import com.sever0x.block2.exception.InvalidJsonException;
 import com.sever0x.block2.model.dto.request.GenerateReportSongsRequest;
 import com.sever0x.block2.model.dto.request.GetSongsRequest;
 import com.sever0x.block2.model.dto.request.SongRequest;
 import com.sever0x.block2.model.dto.response.GenerateReportSongsResponse;
 import com.sever0x.block2.model.dto.response.GetSongsResponse;
 import com.sever0x.block2.model.dto.response.SongResponse;
+import com.sever0x.block2.model.dto.response.UploadResponse;
 import com.sever0x.block2.service.SongService;
+import com.sever0x.block2.service.impl.SongServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -15,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/song")
@@ -59,5 +63,10 @@ public class SongController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .header("Content-Disposition", "attachment; filename=\"" + response.name() + "\"")
                 .body(resource);
+    }
+
+    @PostMapping("/upload")
+    public UploadResponse uploadSongs(@RequestParam("file") MultipartFile file) {
+        return songService.importSongsFromFile(file); //fixme
     }
 }

@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Bohemian Rhapsody",
+    "artist": {
+      "name": "True Queen",
+      "country": "UK"
+    },
+    "album": "A Night at the Opera",
+    "genres": "Rock, Progressive Rock",
+    "duration": 354,
+    "releaseYear": 1975
+  },
+  {
+    "title": "Imagine",
+    "artist": {
+      "name": "Jonny Lennon",
+      "country": "UK"
+    },
+    "album": "Imagine",
+    "genres": "Rock, Pop Rock",
+    "duration": 184,
+    "releaseYear": 1971
+  },
+  {
+    "title": "Stairway to Heaven",
+    "artist": {
+      "name": "Led Zipkin",
+      "country": "UK"
+    },
+    "album": "Led Zeppelin IV",
+    "genres": "Rock, Folk Rock",
+    "duration": 482,
+    "releaseYear": 1971
+  }
+]

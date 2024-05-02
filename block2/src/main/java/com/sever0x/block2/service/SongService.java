@@ -6,6 +6,8 @@ import com.sever0x.block2.model.dto.request.SongRequest;
 import com.sever0x.block2.model.dto.response.GenerateReportSongsResponse;
 import com.sever0x.block2.model.dto.response.GetSongsResponse;
 import com.sever0x.block2.model.dto.response.SongResponse;
+import com.sever0x.block2.model.dto.response.UploadResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface SongService {
 
@@ -20,4 +22,6 @@ public interface SongService {
     GetSongsResponse getSongs(GetSongsRequest request);
 
     GenerateReportSongsResponse generateReportSongs(GenerateReportSongsRequest request);
+
+    UploadResponse importSongsFromFile(MultipartFile file);
 }
