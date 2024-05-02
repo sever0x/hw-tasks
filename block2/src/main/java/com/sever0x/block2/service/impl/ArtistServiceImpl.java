@@ -3,10 +3,15 @@ package com.sever0x.block2.service.impl;
 import com.sever0x.block2.mapper.ArtistMapper;
 import com.sever0x.block2.model.dto.request.ArtistRequest;
 import com.sever0x.block2.model.dto.response.ArtistResponse;
+import com.sever0x.block2.model.entity.Artist;
 import com.sever0x.block2.repository.ArtistRepository;
 import com.sever0x.block2.service.ArtistService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,10 +23,44 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public ArtistResponse createArtist(ArtistRequest request) {
-        return artistMapper.entityToResponse(
-                artistRepository.save(
-                        artistMapper.requestToEntity(request)
-                )
-        );
+        Artist artist = artistMapper.requestToEntity(request);
+        return artistMapper.entityToResponse(artistRepository.save(artist));
+    }
+
+    @Override
+    public List<ArtistResponse> getArtists() {
+        return artistRepository.findAll().stream()
+                .map(artistMapper::entityToResponse)
+                .toList();
+    }
+
+    @Override
+    public void updateArtistById(long id, ArtistRequest request) {
+        Artist updatableArtist = getArtistOrThrow(id);
+        updateArtistFromRequest(updatableArtist, request);
+        artistRepository.save(updatableArtist);
+    }
+
+    @Override
+    public boolean deleteArtistById(long id) {
+        if (!artistRepository.existsById(id)) {
+            throw getResponseStatusExceptionNotFound(id);
+        }
+        artistRepository.deleteById(id);
+        return true;
+    }
+
+    private Artist getArtistOrThrow(long id) {
+        return artistRepository.findById(id)
+                .orElseThrow(() -> getResponseStatusExceptionNotFound(id));
+    }
+
+    private void updateArtistFromRequest(Artist artist, ArtistRequest request) {
+        artist.setName(request.name());
+        artist.setCountry(request.country());
+    }
+
+    private static ResponseStatusException getResponseStatusExceptionNotFound(long id) {
+        return new ResponseStatusException(HttpStatus.NOT_FOUND, "Artist with ID " + id + " doesn't exist");
     }
 }

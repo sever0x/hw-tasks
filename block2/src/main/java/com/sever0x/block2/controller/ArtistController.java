@@ -5,10 +5,9 @@ import com.sever0x.block2.model.dto.response.ArtistResponse;
 import com.sever0x.block2.service.ArtistService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/artist")
@@ -20,5 +19,20 @@ public class ArtistController {
     @PostMapping
     public ArtistResponse createArtist(@RequestBody @Valid ArtistRequest request) {
         return artistService.createArtist(request);
+    }
+
+    @GetMapping
+    public List<ArtistResponse> getArtists() {
+        return artistService.getArtists();
+    }
+
+    @PutMapping("/{id}")
+    public void updateArtist(@PathVariable long id, @RequestBody @Valid ArtistRequest request) {
+        artistService.updateArtistById(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean deleteArtist(@PathVariable long id) {
+        return artistService.deleteArtistById(id);
     }
 }
