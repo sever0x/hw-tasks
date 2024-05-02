@@ -58,12 +58,11 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public GetSongsResponse getSongs(GetSongsRequest request) {
-        Page<Song> songs = songRepository.findAll(getSongsPageable(request));
-        GetSongsResponse response = GetSongsResponse.builder()
+        Page<Song> songs = songRepository.findAll(getSongsPageable(request), request.artistId(), request.album());
+        return GetSongsResponse.builder()
                 .list(songs.map(songMapper::toShortResponse).stream().toList())
                 .totalPages(songs.getTotalPages())
                 .build();
-        return response;
     }
 
     private Artist getArtistOrThrow(long artistId) {
