@@ -1,4 +1,4 @@
-package com.sever0x.block2.model.request;
+package com.sever0x.block2.model.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 

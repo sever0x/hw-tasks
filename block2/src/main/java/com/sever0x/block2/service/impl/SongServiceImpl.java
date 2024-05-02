@@ -1,9 +1,10 @@
 package com.sever0x.block2.service.impl;
 
 import com.sever0x.block2.mapper.SongMapper;
+import com.sever0x.block2.model.dto.request.SongRequest;
+import com.sever0x.block2.model.dto.response.SongResponse;
+import com.sever0x.block2.model.entity.Artist;
 import com.sever0x.block2.model.entity.Song;
-import com.sever0x.block2.model.request.SongRequest;
-import com.sever0x.block2.model.response.SongResponse;
 import com.sever0x.block2.repository.ArtistRepository;
 import com.sever0x.block2.repository.SongRepository;
 import com.sever0x.block2.service.SongService;
@@ -25,21 +26,51 @@ public class SongServiceImpl implements SongService {
     @Override
     public SongResponse createSong(SongRequest request) {
         Song song = songMapper.requestToEntity(request);
-        song.setArtist(artistRepository.findById(request.artistId()).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Artist with ID " + request.artistId() + " doesn't exist"))
-        );
-
+        song.setArtist(getArtistOrThrow(request.artistId()));
         return songMapper.entityToResponse(songRepository.save(song));
     }
 
     @Override
     public SongResponse getSongById(long id) {
-        return null;
+        return songMapper.entityToResponse(getSongOrThrow(id));
     }
 
     @Override
-    public SongResponse updateSongById(SongRequest request) {
-        return null;
+    public void updateSongById(long id, SongRequest request) {
+        Song updatableSong = getSongOrThrow(id);
+        updateSongFromRequest(updatableSong, request);
+        songRepository.save(updatableSong);
+    }
+
+    @Override
+    public boolean deleteSongById(long id) {
+        if (!songRepository.existsById(id)) {
+            throw getResponseStatusExceptionNotFound("Song with ID ", id);
+        }
+        songRepository.deleteById(id);
+        return true;
+    }
+
+    private Artist getArtistOrThrow(long artistId) {
+        return artistRepository.findById(artistId)
+                .orElseThrow(() -> getResponseStatusExceptionNotFound("Artist with ID ", artistId));
+    }
+
+    private Song getSongOrThrow(long id) {
+        return songRepository.findById(id)
+                .orElseThrow(() -> getResponseStatusExceptionNotFound("Song with ID ", id));
+    }
+
+    private void updateSongFromRequest(Song song, SongRequest request) {
+        song.setAlbum(request.album());
+        song.setTitle(request.title());
+        song.setArtist(getArtistOrThrow(request.artistId()));
+        song.setGenres(request.genres());
+        song.setDuration(request.duration());
+        song.setReleaseYear(request.releaseYear());
+    }
+
+    private static ResponseStatusException getResponseStatusExceptionNotFound(String message, long id) {
+        return new ResponseStatusException(HttpStatus.NOT_FOUND, message + id + " doesn't exist");
     }
 }

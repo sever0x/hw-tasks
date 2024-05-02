@@ -1,8 +1,8 @@
 package com.sever0x.block2.service.impl;
 
 import com.sever0x.block2.mapper.ArtistMapper;
-import com.sever0x.block2.model.request.ArtistRequest;
-import com.sever0x.block2.model.response.ArtistResponse;
+import com.sever0x.block2.model.dto.request.ArtistRequest;
+import com.sever0x.block2.model.dto.response.ArtistResponse;
 import com.sever0x.block2.repository.ArtistRepository;
 import com.sever0x.block2.service.ArtistService;
 import lombok.RequiredArgsConstructor;

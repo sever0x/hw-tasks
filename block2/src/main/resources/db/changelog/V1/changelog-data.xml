@@ -47,12 +47,12 @@
     </changeSet>
 
     <!-- Insert artists data -->
-    <changeSet id="insert-artists-data" author="you">
+    <changeSet id="insert-artists-data" author="sever0x">
         <sqlFile path="../../data/insert_artists_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <!-- Insert songs data -->
-    <changeSet id="insert-songs-data" author="you">
+    <changeSet id="insert-songs-data" author="sever0x">
         <sqlFile path="../../data/insert_songs_data.sql" relativeToChangelogFile="true"/>
     </changeSet>
 

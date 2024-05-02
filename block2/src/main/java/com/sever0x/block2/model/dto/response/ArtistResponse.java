@@ -1,4 +1,4 @@
-package com.sever0x.block2.model.response;
+package com.sever0x.block2.model.dto.response;
 
 import lombok.Builder;
 
