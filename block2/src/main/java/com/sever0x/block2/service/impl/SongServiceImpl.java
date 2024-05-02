@@ -1,12 +1,15 @@
 package com.sever0x.block2.service.impl;
 
 import com.sever0x.block2.mapper.SongMapper;
+import com.sever0x.block2.model.dto.request.GenerateReportSongsRequest;
 import com.sever0x.block2.model.dto.request.GetSongsRequest;
 import com.sever0x.block2.model.dto.request.SongRequest;
+import com.sever0x.block2.model.dto.response.GenerateReportSongsResponse;
 import com.sever0x.block2.model.dto.response.GetSongsResponse;
 import com.sever0x.block2.model.dto.response.SongResponse;
 import com.sever0x.block2.model.entity.Artist;
 import com.sever0x.block2.model.entity.Song;
+import com.sever0x.block2.parser.ExcelWriter;
 import com.sever0x.block2.repository.ArtistRepository;
 import com.sever0x.block2.repository.SongRepository;
 import com.sever0x.block2.service.SongService;
@@ -14,13 +17,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class SongServiceImpl implements SongService {
+
+    private static final String EXCEL_REPORT_NAME = "report_by_%s.xlsx";
+
+    private final ExcelWriter writer;
 
     private final SongMapper songMapper;
 
@@ -65,6 +78,25 @@ public class SongServiceImpl implements SongService {
                 .build();
     }
 
+    @Override
+    public GenerateReportSongsResponse generateReportSongs(GenerateReportSongsRequest request) {
+        List<Song> songs = songRepository.findAll(
+                PageRequest.of(0, Integer.MAX_VALUE), request.artistId(), request.album()
+        ).getContent();
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        writer.createExcelReport(songs, out);
+
+        String fileName = formatExcelReportName(request.artistId(), request.album());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", fileName);
+        headers.setContentLength(out.toByteArray().length);
+
+        return new GenerateReportSongsResponse(fileName, new ByteArrayInputStream(out.toByteArray()));
+    }
+
     private Artist getArtistOrThrow(long artistId) {
         return artistRepository.findById(artistId)
                 .orElseThrow(() -> getResponseStatusExceptionNotFound("Artist with ID ", artistId));
@@ -90,5 +122,15 @@ public class SongServiceImpl implements SongService {
 
     private static ResponseStatusException getResponseStatusExceptionNotFound(String message, long id) {
         return new ResponseStatusException(HttpStatus.NOT_FOUND, message + id + " doesn't exist");
+    }
+
+    private String formatExcelReportName(Long artistId, String album) {
+        if (artistId != null && album != null) {
+            return String.format(EXCEL_REPORT_NAME, "artistId_and_album");
+        } else if (artistId != null) {
+            return String.format(EXCEL_REPORT_NAME, "artistId");
+        } else {
+            return String.format(EXCEL_REPORT_NAME, "album");
+        }
     }
 }
