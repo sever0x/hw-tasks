@@ -1,6 +1,8 @@
 package com.sever0x.block2.controller;
 
+import com.sever0x.block2.model.dto.request.GetSongsRequest;
 import com.sever0x.block2.model.dto.request.SongRequest;
+import com.sever0x.block2.model.dto.response.GetSongsResponse;
 import com.sever0x.block2.model.dto.response.SongResponse;
 import com.sever0x.block2.service.SongService;
 import jakarta.validation.Valid;
@@ -32,5 +34,10 @@ public class SongController {
     @DeleteMapping("/{id}")
     public boolean deleteSong(@PathVariable long id) {
         return songService.deleteSongById(id);
+    }
+
+    @PostMapping("/_list")
+    public GetSongsResponse getSongs(@RequestBody @Valid GetSongsRequest request) {
+        return songService.getSongs(request);
     }
 }

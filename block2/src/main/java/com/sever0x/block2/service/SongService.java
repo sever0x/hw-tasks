@@ -1,6 +1,8 @@
 package com.sever0x.block2.service;
 
+import com.sever0x.block2.model.dto.request.GetSongsRequest;
 import com.sever0x.block2.model.dto.request.SongRequest;
+import com.sever0x.block2.model.dto.response.GetSongsResponse;
 import com.sever0x.block2.model.dto.response.SongResponse;
 
 public interface SongService {
@@ -12,4 +14,6 @@ public interface SongService {
     void updateSongById(long id, SongRequest request);
 
     boolean deleteSongById(long id);
+
+    GetSongsResponse getSongs(GetSongsRequest request);
 }
