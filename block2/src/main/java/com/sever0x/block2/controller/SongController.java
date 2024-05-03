@@ -67,6 +67,6 @@ public class SongController {
 
     @PostMapping("/upload")
     public UploadResponse uploadSongs(@RequestParam("file") MultipartFile file) {
-        return songService.importSongsFromFile(file); //fixme
+        return songService.importSongsFromFile(file);
     }
 }

@@ -31,5 +31,16 @@
     "genres": "Invalid Genres, Extra, Invalid",
     "duration": 500,
     "releaseYear": 2023
+  },
+  {
+    "title": "Bohemian Rhapsody",
+    "artist": {
+      "name": "True Queen",
+      "country": "UK"
+    },
+    "album": "A Night at the Opera",
+    "genres": "Rock, Progressive Rock",
+    "duration": 354,
+    "releaseYear": 1975
   }
 ]

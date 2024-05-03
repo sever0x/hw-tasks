@@ -1,4 +1,4 @@
-package com.sever0x.block2.parser.json;
+package com.sever0x.block2.parser.json.response;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sever0x.block2.validation.ValidationUtils;
@@ -21,7 +21,7 @@ public record ParsedSong(
         @Positive(message = "Release year must be positive")
         int releaseYear
 ) {
-    ParsedSong(JsonNode jsonNode) {
+    public ParsedSong(JsonNode jsonNode) {
         this(
                 jsonNode.get("title").asText(),
                 jsonNode.get("artist").get("name").asText(),

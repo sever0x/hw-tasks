@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sever0x.block2.parser.json.response.JsonParseResponse;
+import com.sever0x.block2.parser.json.response.ParsedSong;
 import com.sever0x.block2.validation.ValidationUtils;
 import org.springframework.stereotype.Component;
 
@@ -17,9 +19,11 @@ import java.util.List;
 public class JsonPlaylistParser {
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public List<ParsedSong> parseSongsFromFile(InputStream inputStream) throws IOException {
+    public JsonParseResponse parseSongsFromFile(InputStream inputStream) throws IOException {
         List<ParsedSong> parsedSongs = new ArrayList<>();
         JsonFactory jsonFactory = new JsonFactory();
+
+        int failures = 0;
 
         try (JsonParser jsonParser = jsonFactory.createParser(inputStream)) {
             if (jsonParser.nextToken() != JsonToken.START_ARRAY) {
@@ -27,15 +31,16 @@ public class JsonPlaylistParser {
             }
 
             while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
+                JsonNode rootNode = mapper.readTree(jsonParser);
                 try {
-                    JsonNode rootNode = mapper.readTree(jsonParser);
                     parsedSongs.add(new ParsedSong(rootNode));
                 } catch (ValidationUtils.ValidationException e) {
+                    failures++;
                     System.out.println("Skipping invalid record: " + e.getMessage());
                 }
             }
         }
 
-        return parsedSongs;
+        return new JsonParseResponse(parsedSongs, failures);
     }
 }

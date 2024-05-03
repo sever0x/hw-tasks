@@ -13,7 +13,8 @@ import com.sever0x.block2.model.dto.response.UploadResponse;
 import com.sever0x.block2.model.entity.Artist;
 import com.sever0x.block2.model.entity.Song;
 import com.sever0x.block2.parser.json.JsonPlaylistParser;
-import com.sever0x.block2.parser.json.ParsedSong;
+import com.sever0x.block2.parser.json.response.JsonParseResponse;
+import com.sever0x.block2.parser.json.response.ParsedSong;
 import com.sever0x.block2.parser.xslx.ExcelWriter;
 import com.sever0x.block2.repository.ArtistRepository;
 import com.sever0x.block2.repository.SongRepository;
@@ -109,28 +110,16 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public UploadResponse importSongsFromFile(MultipartFile file) {
-        int successCount = 0;
-        int failureCount = 0;
         try {
-            List<ParsedSong> parsedSongs = jsonPlaylistParser.parseSongsFromFile(file.getInputStream());
-            List<String> invalidRecords = new ArrayList<>();
+            JsonParseResponse response = jsonPlaylistParser.parseSongsFromFile(file.getInputStream());
+            List<ParsedSong> parsedSongs = response.parsedSongs();
 
             for (ParsedSong parsedSong : parsedSongs) {
-                try {
-                    Song song = createSongFromParsedSong(parsedSong);
-                    songRepository.save(song);
-                    successCount++;
-                } catch (ArtistNotFoundException e) {
-                    invalidRecords.add(parsedSong.title());
-                }
+                Song song = createSongFromParsedSong(parsedSong);
+                songRepository.save(song);
             }
 
-            if (!invalidRecords.isEmpty()) {
-                failureCount++;
-                throw new InvalidJsonException("Some records were invalid", invalidRecords);
-            }
-
-            return new UploadResponse(successCount, failureCount);
+            return new UploadResponse(parsedSongs.size(), response.missedSongs());
         } catch (IOException e) {
             throw new RuntimeException("Failed to read file", e);
         }
