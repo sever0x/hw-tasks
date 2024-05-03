@@ -21,12 +21,23 @@ public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistRepository artistRepository;
 
+    /**
+     * Creates a new artist based on the provided request data.
+     *
+     * @param request the request containing the artist data
+     * @return the response containing the created artist details
+     */
     @Override
     public ArtistResponse createArtist(ArtistRequest request) {
         Artist artist = artistMapper.requestToEntity(request);
         return artistMapper.entityToResponse(artistRepository.save(artist));
     }
 
+    /**
+     * Retrieves a list of all artists.
+     *
+     * @return the list of artist responses
+     */
     @Override
     public List<ArtistResponse> getArtists() {
         return artistRepository.findAll().stream()
@@ -34,6 +45,13 @@ public class ArtistServiceImpl implements ArtistService {
                 .toList();
     }
 
+    /**
+     * Updates an existing artist with the provided request data.
+     *
+     * @param id      the ID of the artist to update
+     * @param request the request containing the updated artist data
+     * @throws ResponseStatusException if the artist with the given ID is not found
+     */
     @Override
     public void updateArtistById(long id, ArtistRequest request) {
         Artist updatableArtist = getArtistOrThrow(id);
@@ -41,6 +59,13 @@ public class ArtistServiceImpl implements ArtistService {
         artistRepository.save(updatableArtist);
     }
 
+    /**
+     * Deletes an artist by its ID.
+     *
+     * @param id the ID of the artist to delete
+     * @return true if the artist was deleted successfully, false otherwise
+     * @throws ResponseStatusException if the artist with the given ID is not found
+     */
     @Override
     public boolean deleteArtistById(long id) {
         if (!artistRepository.existsById(id)) {

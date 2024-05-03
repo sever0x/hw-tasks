@@ -49,6 +49,12 @@ public class SongServiceImpl implements SongService {
 
     private final JsonPlaylistParser jsonPlaylistParser;
 
+    /**
+     * Creates a new song based on the provided request data.
+     *
+     * @param request the request containing the song data
+     * @return the response containing the created song details
+     */
     @Override
     public SongResponse createSong(SongRequest request) {
         Song song = songMapper.requestToEntity(request);
@@ -56,11 +62,25 @@ public class SongServiceImpl implements SongService {
         return songMapper.entityToResponse(songRepository.save(song));
     }
 
+    /**
+     * Retrieves the details of a song by its ID.
+     *
+     * @param id the ID of the song to retrieve
+     * @return the response containing the song details
+     * @throws ResponseStatusException if the song with the given ID is not found
+     */
     @Override
     public SongResponse getSongById(long id) {
         return songMapper.entityToResponse(getSongOrThrow(id));
     }
 
+    /**
+     * Updates an existing song with the provided request data.
+     *
+     * @param id      the ID of the song to update
+     * @param request the request containing the updated song data
+     * @throws ResponseStatusException if the song with the given ID is not found
+     */
     @Override
     public void updateSongById(long id, SongRequest request) {
         Song updatableSong = getSongOrThrow(id);
@@ -68,6 +88,13 @@ public class SongServiceImpl implements SongService {
         songRepository.save(updatableSong);
     }
 
+    /**
+     * Deletes a song by its ID.
+     *
+     * @param id the ID of the song to delete
+     * @return true if the song was deleted successfully, false otherwise
+     * @throws ResponseStatusException if the song with the given ID is not found
+     */
     @Override
     public boolean deleteSongById(long id) {
         if (!songRepository.existsById(id)) {
@@ -77,6 +104,12 @@ public class SongServiceImpl implements SongService {
         return true;
     }
 
+    /**
+     * Retrieves a list of songs based on the provided request data.
+     *
+     * @param request the request containing the filtering and pagination options
+     * @return the response containing the list of songs and total pages
+     */
     @Override
     public GetSongsResponse getSongs(GetSongsRequest request) {
         Page<Song> songs = songRepository.findAll(getSongsPageable(request), request.artistId(), request.album());
@@ -86,6 +119,12 @@ public class SongServiceImpl implements SongService {
                 .build();
     }
 
+    /**
+     * Generates an Excel report of songs based on the provided request data.
+     *
+     * @param request the request containing the filtering options for the report
+     * @return the response containing the name and content of the generated report
+     */
     @Override
     public GenerateReportSongsResponse generateReportSongs(GenerateReportSongsRequest request) {
         List<Song> songs = songRepository.findAll(
@@ -105,6 +144,13 @@ public class SongServiceImpl implements SongService {
         return new GenerateReportSongsResponse(fileName, new ByteArrayInputStream(out.toByteArray()));
     }
 
+    /**
+     * Imports songs from a JSON file.
+     *
+     * @param file the MultipartFile containing the JSON data
+     * @return the response containing the count of successfully imported songs and missed songs
+     * @throws RuntimeException if there is an error reading the file
+     */
     @Override
     public UploadResponse importSongsFromFile(MultipartFile file) {
         try {
