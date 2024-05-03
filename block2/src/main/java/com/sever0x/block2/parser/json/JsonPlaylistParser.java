@@ -7,7 +7,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sever0x.block2.parser.json.response.JsonParseResponse;
 import com.sever0x.block2.parser.json.response.ParsedSong;
-import com.sever0x.block2.validation.ValidationUtils;
+import com.sever0x.block2.validation.exception.ValidationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Slf4j
 public class JsonPlaylistParser {
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -34,9 +36,9 @@ public class JsonPlaylistParser {
                 JsonNode rootNode = mapper.readTree(jsonParser);
                 try {
                     parsedSongs.add(new ParsedSong(rootNode));
-                } catch (ValidationUtils.ValidationException e) {
+                } catch (ValidationException e) {
                     failures++;
-                    System.out.println("Skipping invalid record: " + e.getMessage());
+                    log.error("Skipping invalid record: " + e.getMessage());
                 }
             }
         }

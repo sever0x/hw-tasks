@@ -1,4 +1,4 @@
-package com.sever0x.block2.exception.model;
+package com.sever0x.block2.controller.advice.exception.response;
 
 import java.util.List;
 

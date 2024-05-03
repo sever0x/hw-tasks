@@ -1,7 +1,5 @@
 package com.sever0x.block2.service.impl;
 
-import com.sever0x.block2.exception.ArtistNotFoundException;
-import com.sever0x.block2.exception.InvalidJsonException;
 import com.sever0x.block2.mapper.SongMapper;
 import com.sever0x.block2.model.dto.request.GenerateReportSongsRequest;
 import com.sever0x.block2.model.dto.request.GetSongsRequest;
@@ -33,7 +31,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

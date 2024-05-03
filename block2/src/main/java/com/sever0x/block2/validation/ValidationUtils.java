@@ -1,5 +1,6 @@
 package com.sever0x.block2.validation;
 
+import com.sever0x.block2.validation.exception.ValidationException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -19,12 +20,6 @@ public class ValidationUtils {
                 sb.append(violation.getMessage()).append("\n");
             }
             throw new ValidationException(sb.toString());
-        }
-    }
-
-    public static class ValidationException extends RuntimeException {
-        public ValidationException(String message) {
-            super(message);
         }
     }
 }

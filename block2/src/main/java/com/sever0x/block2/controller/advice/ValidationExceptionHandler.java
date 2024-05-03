@@ -1,7 +1,7 @@
 package com.sever0x.block2.controller.advice;
 
-import com.sever0x.block2.exception.model.FieldValidationError;
-import com.sever0x.block2.exception.model.ValidationErrorResponse;
+import com.sever0x.block2.controller.advice.exception.response.FieldValidationError;
+import com.sever0x.block2.controller.advice.exception.response.ValidationErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
