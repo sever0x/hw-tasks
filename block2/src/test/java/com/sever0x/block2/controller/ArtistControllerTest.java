@@ -8,15 +8,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,7 +35,7 @@ class ArtistControllerTest {
     private ArtistService artistService;
 
     @Test
-    void testCreateArtist() throws Exception {
+    void shouldCreateArtist() throws Exception {
         ArtistRequest request = new ArtistRequest("John Doe", "USA");
         ArtistResponse response = new ArtistResponse(1L, "John Doe", "USA");
 
@@ -52,7 +53,27 @@ class ArtistControllerTest {
     }
 
     @Test
-    void testGetArtists() throws Exception {
+    void shouldFailToCreateArtistWithBlankName() throws Exception {
+        ArtistRequest request = new ArtistRequest("", "USA");
+
+        mockMvc.perform(post("/api/artist")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldFailToCreateArtistWithBlankCountry() throws Exception {
+        ArtistRequest request = new ArtistRequest("John Doe", "");
+
+        mockMvc.perform(post("/api/artist")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldGetArtists() throws Exception {
         ArtistResponse response1 = new ArtistResponse(1L, "John Doe", "USA");
         ArtistResponse response2 = new ArtistResponse(2L, "Jane Smith", "Canada");
 
@@ -72,7 +93,7 @@ class ArtistControllerTest {
     }
 
     @Test
-    void testUpdateArtist() throws Exception {
+    void shouldUpdateArtist() throws Exception {
         ArtistRequest request = new ArtistRequest("John Doe", "Canada");
 
         mockMvc.perform(put("/api/artist/1")
@@ -84,12 +105,55 @@ class ArtistControllerTest {
     }
 
     @Test
-    void testDeleteArtist() throws Exception {
+    void shouldFailToUpdateArtistWithBlankName() throws Exception {
+        ArtistRequest request = new ArtistRequest("", "Canada");
+
+        mockMvc.perform(put("/api/artist/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldFailToUpdateArtistWithBlankCountry() throws Exception {
+        ArtistRequest request = new ArtistRequest("John Doe", "");
+
+        mockMvc.perform(put("/api/artist/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldFailToUpdateNonExistingArtist() throws Exception {
+        ArtistRequest request = new ArtistRequest("John Doe", "Canada");
+        long nonExistingArtistId = 1L;
+
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND))
+                .when(artistService)
+                .updateArtistById(nonExistingArtistId, request);
+
+        mockMvc.perform(put("/api/artist/{id}", nonExistingArtistId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldDeleteArtist() throws Exception {
         when(artistService.deleteArtistById(anyLong())).thenReturn(true);
 
         mockMvc.perform(delete("/api/artist/1"))
                 .andExpect(status().isOk());
 
         verify(artistService).deleteArtistById(1L);
+    }
+
+    @Test
+    void shouldFailToDeleteNonExistingArtist() throws Exception {
+        when(artistService.deleteArtistById(anyLong())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        mockMvc.perform(delete("/api/artist/1"))
+                .andExpect(status().isNotFound());
     }
 }
