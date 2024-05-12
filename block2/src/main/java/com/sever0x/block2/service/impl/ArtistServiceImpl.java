@@ -30,6 +30,10 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public ArtistResponse createArtist(ArtistRequest request) {
         Artist artist = artistMapper.requestToEntity(request);
+        if (isArtistExistByName(artist.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Artist with name " + artist.getName() + " already exist");
+        }
         return artistMapper.entityToResponse(artistRepository.save(artist));
     }
 
@@ -73,6 +77,10 @@ public class ArtistServiceImpl implements ArtistService {
         }
         artistRepository.deleteById(id);
         return true;
+    }
+
+    private boolean isArtistExistByName(String name) {
+        return artistRepository.existsArtistByName(name);
     }
 
     private Artist getArtistOrThrow(long id) {

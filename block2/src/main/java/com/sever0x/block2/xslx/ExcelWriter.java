@@ -1,4 +1,4 @@
-package com.sever0x.block2.parser.xslx;
+package com.sever0x.block2.xslx;
 
 import com.sever0x.block2.model.entity.Song;
 

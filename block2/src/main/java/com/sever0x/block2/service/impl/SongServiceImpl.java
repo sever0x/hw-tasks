@@ -13,18 +13,17 @@ import com.sever0x.block2.model.entity.Song;
 import com.sever0x.block2.parser.json.JsonPlaylistParser;
 import com.sever0x.block2.parser.json.response.JsonParseResponse;
 import com.sever0x.block2.parser.json.response.ParsedSong;
-import com.sever0x.block2.parser.xslx.ExcelWriter;
 import com.sever0x.block2.repository.ArtistRepository;
 import com.sever0x.block2.repository.SongRepository;
 import com.sever0x.block2.service.SongService;
+import com.sever0x.block2.xslx.ExcelWriter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -56,6 +55,7 @@ public class SongServiceImpl implements SongService {
      * @return the response containing the created song details
      */
     @Override
+    @Transactional
     public SongResponse createSong(SongRequest request) {
         Song song = songMapper.requestToEntity(request);
         song.setArtist(getArtistOrThrow(request.artistId()));
@@ -70,6 +70,7 @@ public class SongServiceImpl implements SongService {
      * @throws ResponseStatusException if the song with the given ID is not found
      */
     @Override
+    @Transactional(readOnly = true)
     public SongResponse getSongById(long id) {
         return songMapper.entityToResponse(getSongOrThrow(id));
     }
@@ -82,6 +83,7 @@ public class SongServiceImpl implements SongService {
      * @throws ResponseStatusException if the song with the given ID is not found
      */
     @Override
+    @Transactional
     public void updateSongById(long id, SongRequest request) {
         Song updatableSong = getSongOrThrow(id);
         updateSongFromRequest(updatableSong, request);
@@ -96,6 +98,7 @@ public class SongServiceImpl implements SongService {
      * @throws ResponseStatusException if the song with the given ID is not found
      */
     @Override
+    @Transactional
     public boolean deleteSongById(long id) {
         if (!songRepository.existsById(id)) {
             throw getResponseStatusExceptionNotFound("Song with ID ", id);
@@ -111,6 +114,7 @@ public class SongServiceImpl implements SongService {
      * @return the response containing the list of songs and total pages
      */
     @Override
+    @Transactional(readOnly = true)
     public GetSongsResponse getSongs(GetSongsRequest request) {
         Page<Song> songs = songRepository.findAll(getSongsPageable(request), request.artistId(), request.album());
         return GetSongsResponse.builder()
@@ -136,11 +140,6 @@ public class SongServiceImpl implements SongService {
 
         String fileName = formatExcelReportName(request.artistId(), request.album());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDispositionFormData("attachment", fileName);
-        headers.setContentLength(out.toByteArray().length);
-
         return new GenerateReportSongsResponse(fileName, new ByteArrayInputStream(out.toByteArray()));
     }
 
@@ -152,6 +151,7 @@ public class SongServiceImpl implements SongService {
      * @throws RuntimeException if there is an error reading the file
      */
     @Override
+    @Transactional
     public UploadResponse importSongsFromFile(MultipartFile file) {
         try {
             JsonParseResponse response = jsonPlaylistParser.parseSongsFromFile(file.getInputStream());
