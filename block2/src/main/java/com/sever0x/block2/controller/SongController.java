@@ -3,10 +3,7 @@ package com.sever0x.block2.controller;
 import com.sever0x.block2.model.dto.request.GenerateReportSongsRequest;
 import com.sever0x.block2.model.dto.request.GetSongsRequest;
 import com.sever0x.block2.model.dto.request.SongRequest;
-import com.sever0x.block2.model.dto.response.GenerateReportSongsResponse;
-import com.sever0x.block2.model.dto.response.GetSongsResponse;
-import com.sever0x.block2.model.dto.response.SongResponse;
-import com.sever0x.block2.model.dto.response.UploadResponse;
+import com.sever0x.block2.model.dto.response.*;
 import com.sever0x.block2.service.SongService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -54,8 +51,8 @@ public class SongController {
      * @param request the request containing the updated song data
      */
     @PutMapping("/{id}")
-    public void updateSong(@PathVariable long id, @RequestBody @Valid SongRequest request) {
-        songService.updateSongById(id, request);
+    public SongResponse updateSong(@PathVariable long id, @RequestBody @Valid SongRequest request) {
+        return songService.updateSongById(id, request);
     }
 
     /**
@@ -65,7 +62,7 @@ public class SongController {
      * @return true if the song was deleted successfully, false otherwise
      */
     @DeleteMapping("/{id}")
-    public boolean deleteSong(@PathVariable long id) {
+    public DeleteSongResponse deleteSong(@PathVariable long id) {
         return songService.deleteSongById(id);
     }
 

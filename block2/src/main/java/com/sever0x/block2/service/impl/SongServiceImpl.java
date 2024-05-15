@@ -4,10 +4,7 @@ import com.sever0x.block2.mapper.SongMapper;
 import com.sever0x.block2.model.dto.request.GenerateReportSongsRequest;
 import com.sever0x.block2.model.dto.request.GetSongsRequest;
 import com.sever0x.block2.model.dto.request.SongRequest;
-import com.sever0x.block2.model.dto.response.GenerateReportSongsResponse;
-import com.sever0x.block2.model.dto.response.GetSongsResponse;
-import com.sever0x.block2.model.dto.response.SongResponse;
-import com.sever0x.block2.model.dto.response.UploadResponse;
+import com.sever0x.block2.model.dto.response.*;
 import com.sever0x.block2.model.entity.Artist;
 import com.sever0x.block2.model.entity.Song;
 import com.sever0x.block2.parser.json.JsonPlaylistParser;
@@ -84,10 +81,10 @@ public class SongServiceImpl implements SongService {
      */
     @Override
     @Transactional
-    public void updateSongById(long id, SongRequest request) {
+    public SongResponse updateSongById(long id, SongRequest request) {
         Song updatableSong = getSongOrThrow(id);
         updateSongFromRequest(updatableSong, request);
-        songRepository.save(updatableSong);
+        return songMapper.entityToResponse(songRepository.save(updatableSong));
     }
 
     /**
@@ -99,12 +96,12 @@ public class SongServiceImpl implements SongService {
      */
     @Override
     @Transactional
-    public boolean deleteSongById(long id) {
+    public DeleteSongResponse deleteSongById(long id) {
         if (!songRepository.existsById(id)) {
             throw getResponseStatusExceptionNotFound("Song with ID ", id);
         }
         songRepository.deleteById(id);
-        return true;
+        return new DeleteSongResponse(id, true);
     }
 
     /**
