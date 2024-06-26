@@ -222,7 +222,8 @@ class SongControllerTest {
 
     @Test
     void shouldDeleteSong() throws Exception {
-        when(songService.deleteSongById(1L)).thenReturn(true);
+        DeleteSongResponse response = new DeleteSongResponse(1, true);
+        when(songService.deleteSongById(1L)).thenReturn(response);
 
         mockMvc.perform(delete("/api/song/1"))
                 .andExpect(status().isOk());
@@ -241,8 +242,8 @@ class SongControllerTest {
     @Test
     void shouldGetSongs() throws Exception {
         GetSongsRequest request = new GetSongsRequest(1L, "Test Album", 0, 10);
-        ShortSongResponse response1 = new ShortSongResponse("Test Song 1", "Test Artist", "Test Album", 180);
-        ShortSongResponse response2 = new ShortSongResponse("Test Song 2", "Test Artist", "Test Album", 200);
+        ShortSongResponse response1 = new ShortSongResponse(1, "Test Song 1", "Test Artist", "Test Album", 180);
+        ShortSongResponse response2 = new ShortSongResponse(2, "Test Song 2", "Test Artist", "Test Album", 200);
         GetSongsResponse getSongsResponse = new GetSongsResponse(List.of(response1, response2), 1);
 
         when(songService.getSongs(any(GetSongsRequest.class))).thenReturn(getSongsResponse);
